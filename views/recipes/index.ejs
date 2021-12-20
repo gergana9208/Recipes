@@ -1,0 +1,326 @@
+<%- include ("../partials/header") %>
+
+<script type = "text/javascript">	
+	
+//removes data from modal after its closing	
+	$('body').on('hidden.bs.modal', '.modal', function () {
+		$(this).removeData('bs.modal');
+	});			
+//new modal logic		
+	$(function a(){
+			$('#newModalForm').on('click', function(){
+				$('#newModalForm').bind('show', function () {
+					// do sth with the modal
+				});
+					$('#addMyModal').modal('toggle');
+					return false;
+			});
+	});
+//add rows to newModalForm
+	$(document).on('click', '#addRow', function () {
+	 var html = '';
+		html += '<div id="inputFormRow">';
+		html += '<div class="input-group mb-3">';
+		html += '<input type="text" name="item[title][]" class="form-control m-input" placeholder="Ingredient" autocomplete="off">';
+		html += '<span class="input-group-addon">-</span>';
+		html += '<input type="text" name="item[val][]" class="form-control m-input" placeholder="Quantity" autocomplete="off">';
+		html += '</div>';
+		html += '<div class="input-group-append">';
+		html += '<button id="removeRow" type="button" class="btn btn-danger">Remove</button>';
+		html += '</div>';
+		html += '</div>';
+			$('#newRow').append(html);
+	});
+// remove row newModalForm
+	$(document).on('click', '#removeRow', function () {
+		$(this).closest('#inputFormRow').remove();
+	});
+//delete empty rows newModalForm
+	$(document).on('click', '#send', function(){ 
+		$(':input[type="text"]').filter(function(e){
+			if(this.value.length===0){
+			  return true;
+			}  
+		}).remove();
+	});	
+	
+	
+
+$(document).on('click', '.thumbnail', function () {
+		$(this).toggleClass('selected');
+			//add css red border
+		
+			$(".selected").css( "border", "2.5px solid black" );
+			// Alert clicked recipes'si d>>>> alert($(this).attr('id'));	
+				
+					if($(".thumbnail").hasClass("selected")) {
+						var optionValues=$(this).children('h4');
+					
+						//on selected it clones each time 
+							var addeditems = [];
+						$(optionValues).clone().appendTo( ".product-info");
+						
+			
+						
+						
+						$('.removeX' ).removeClass('hidden');
+						$('.a-declarative').removeClass('hidden');
+							$('.product-info').on('click', '.removeX', function () {
+								//Removes the closest div element up from .removeX
+								$(this).closest('div').remove();
+							});	
+					} 
+});
+///////	
+
+
+	
+///////	
+//remove css red border
+	$(document).on('click', '.selected', function () {
+		$(this).removeAttr("style");
+	});	
+	
+//trying to add only selected ids	
+	$(document).on('click', '#addlist', function () {
+	
+	});
+	
+////mycard javascript
+	$(function () {
+
+  var goToCartIcon = function($addTocartBtn){
+    var $cartIcon = $(".my-cart-icon");
+    var $image = $('<img width="30px" height="30px" src="' + $addTocartBtn.data("image") + '"/>').css({"position": "fixed", "z-index": "999"});
+    $addTocartBtn.prepend($image);
+    var position = $cartIcon.position();
+    $image.animate({
+      top: position.top,
+      left: position.left
+    }, 500 , "linear", function() {
+      $image.remove();
+    });
+  }
+
+  $('.my-cart-btn').myCart({
+    classCartIcon: 'my-cart-icon',
+    classCartBadge: 'my-cart-badge',
+    affixCartIcon: true,
+    checkoutCart: function(recipe) {
+      $.each(recipe, function(){
+        console.log(this);
+      });
+    },
+	  
+	   
+    clickOnAddToCart: function($addTocart){
+      goToCartIcon($addTocart);
+    },
+    getDiscountPrice: function(recipe) {
+      var total = 0;
+      $.each(recipe, function(){
+		 
+        total += this.quantity * this.price;
+      });
+      return total * 0.5;
+    }
+  });
+
+});
+	
+	 $cartTable.append(recipe.length ?
+        '<tr>' +
+        '<td></td>' +
+        '<td><strong>Total</strong></td>' +
+        '<td></td>' +
+        '<td></td>' +
+        '<td class="text-right"><strong id="' + idGrandTotal + '"></strong></td>' +
+        '<td></td>' +
+        '</tr>' :
+        '<div class="alert alert-danger" role="alert" id="' + idEmptyCartMessage + '">Your cart is empty</div>'
+      );
+	
+	
+	
+	
+	
+</script>
+<div class="container">
+	<header class="jumbotron">
+		<div class="container">
+			<h1>All Recipes</h1>
+			
+			<!-- original new.ejs page	<a class="btn btn-primary btn-large" href="/recipes/new">Add New Recipe</a>	 -->
+				<% if(!currentUser){ %>
+					<a class=" btn btn-info btn-lg" href="/login">Login</a>	
+						<% } else { %>
+							 <!-- I have hidden this button until I can select and post each recipe to a list 
+<button id="newModalForm" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#addMyModal">Add New Recipe</button>	-->				
+			
+				<% } %>
+			
+		</div>
+	</header>
+
+	
+		<div  class="row text-center" style="display:flex; flex-wrap: wrap;">
+			<% recipes.forEach(function(recipe){ %>
+				<% if(currentUser){ %>
+					<div class="col-md-3 col-sm-6">
+							<div class="caption">
+								<div class="thumbnail">
+									<h4 class="title-group">	
+										<div id="<%=recipe._id%>"><%=recipe.name%>
+											
+											<span id="qnt" class="a-declarative hidden " data-action="quantity-dropdown" data-quantity-dropdown="{}">
+													<span class="a-dropdown-container"><label for="quantity" class="a-native-dropdown"></label>
+														<select name="quantity" autocomplete="off" id="quantity" tabindex="0" class="a-native-dropdown">
+															<option value="1" selected="">1
+															</option>
+															<option value="2">2
+															</option>
+															<option value="3">3
+															</option>
+															<option value="4">4
+															</option>
+															<option value="5">5
+															</option>
+														</select>
+														<span tabindex="-1" class="a-button a-button-dropdown a-button-small" aria-hidden="true" id="a-autoid-0" style="min-width: 0%;"><span class="a-button-inner"><span class="a-button-text a-declarative" data-action="a-dropdown-button" role="button" aria-hidden="true" id="a-autoid-0-announce"></span><i class="a-icon a-icon-dropdown"></i></span></span></span>
+
+											</span><button type="button" class="removeX btn btn-danger hidden">x</button>	
+										</div>
+									</h4> 
+										<img src="<%= recipe.image %>" class="img-fluid" alt="Responsive image">
+											<div class="hidden">
+											<% for(var k=0; k< recipe.myresult.length; k++){ %>
+											<div  class="caption"> <%= recipe.myresult[k] %></div>
+											<% } %></div>
+								</div>
+							</div>
+						<button  type="button" href="recipes/<%=recipe._id%>" class=" btn btn-primary"  data-toggle="modal" data-target="#ShowModal"  >Show Recipe	</button>
+						<button class="btn btn-danger my-cart-btn" data-id="<%= recipe._id %>" data-name="<%= recipe.name%>" data-summary="summary 1" data-price="10" data-quantity="1"  data-image="<%= recipe.image %>">Add to Cart</button>
+						
+					</div>	
+				<% } %>
+			<% }); %>
+		</div>	
+
+
+	
+	
+
+	
+	
+
+</div>
+
+
+	
+ <!--test --> 
+
+
+<!--modals -->
+<div class="modal fade" id="addMyModal"  role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">Add Ingredients</h4>
+      </div>
+      <div class="modal-body">
+        <form action="/recipes"  method="POST" role="form" >
+			<div class="form-group">
+						<input class="form-control" type="text" name="name" placeholder="name"> 	
+					</div>
+					<div class="form-group">
+						<input class="form-control" type="text" name="image" placeholder="image url">
+					</div>
+					<div class="form-group">
+						<input class="form-control" type="text" name="description" placeholder="description">
+					</div>
+						<div id="inputFormRow">
+							<div class="input-group mb-3">
+								<input type="text" id="title"  name="item[title][]" class="form-control m-input" placeholder="Ingredient " />
+									<span class="input-group-addon">-</span>
+								<input type="text" name="item[val][]" class="form-control m-input" placeholder="Quantity"/>	 
+							</div>
+							<div class="input-group-append">
+								<button id="removeRow" type="button" class="btn btn-danger">Remove</button>
+							</div>
+						</div>
+						<div id="inputFormRow">
+							<div class="input-group mb-3">
+								<input type="text" id="title"  name="item[title][]" class="form-control m-input" placeholder="Ingredient " autocomplete="off"/>
+									<span class="input-group-addon">-</span>
+								<input type="text" name="item[val][]" class="form-control m-input" placeholder="Quantity" autocomplete="off"/>	 
+							</div>
+							<div class="input-group-append">
+								<button id="removeRow" type="button" class="btn btn-danger">Remove</button>
+							</div>
+						</div>
+						<div id="inputFormRow">
+							<div class="input-group mb-3">
+								<input type="text"  id="title" name="item[title][]" class="form-control m-input" placeholder="Ingredient " autocomplete="off"/>
+									<span class="input-group-addon">-</span>
+								<input type="text" name="item[val][]" class="form-control m-input" placeholder="Quantity" autocomplete="off"/>	 
+							</div>
+							<div class="input-group-append">
+								<button id="removeRow" type="button" class="btn btn-danger">Remove</button>
+							</div>
+						</div>
+						<div id="inputFormRow">
+							<div class="input-group mb-3">
+								<input type="text" id="title"  name="item[title][]" class="form-control m-input" placeholder="Ingredient " autocomplete="off"/>
+									<span class="input-group-addon">-</span>
+								<input type="text" name="item[val][]" class="form-control m-input" placeholder="Quantity" autocomplete="off"/>	 
+							</div>
+							<div class="input-group-append">
+								<button id="removeRow" type="button" class="btn btn-danger">Remove</button>
+							</div>
+						</div>
+						<div id="inputFormRow">
+							<div class="input-group mb-3">
+								<input type="text" id="title" name="item[title][]" class="form-control m-input" placeholder="Ingredient " autocomplete="off"/>
+									<span class="input-group-addon">-</span>
+									<input type="text" name="item[val][]" class="form-control m-input " placeholder="Quantity" autocomplete="off"/>	 
+							</div>
+							<div class="input-group-append">
+								<button id="removeRow" type="button" class="btn btn-danger">Remove</button>
+							</div>
+						</div>
+							<div id="newRow"></div>
+								<button id="addRow" type="button" class="btn btn-info">Add Row</button>
+							<button type="submit" name="send" id="send" value="Send" class="btn btn-lg btn-primary btn-block">Submit!</button>	
+        </form> 
+      </div>
+    </div>
+  </div>
+</div>	
+
+
+
+<div class="modal fade"  role="dialog"  aria-hidden="true" id="ShowModal" >
+  <div class="modal-dialog">
+    <div class="modal-content">
+		<div class="modal-header">
+        	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          		<span aria-hidden="true">&times;</span>
+        	</button>
+			<div class="modal-body"></div>
+      	</div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+		 
+
+
+<%- include ("../partials/footer") %>

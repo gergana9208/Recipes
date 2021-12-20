@@ -1,0 +1,14 @@
+<%- include ("./partials/header") %>
+<div class="container">
+<h1>
+	Login to your account
+</h1>
+<form action="/login" method="POST">
+<input type="name" name="username" placeholder= "username">
+<input type="password" name="password" placeholder= "password">
+<input type="submit" value="Login">	
+</form>
+<hr>
+<a class=" btn btn-success" href="/register">Sign Up!</a>
+</div>
+<%- include ("./partials/footer") %>

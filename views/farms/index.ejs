@@ -1,0 +1,38 @@
+<%- include ("../partials/header")%>
+
+
+<div class="container">
+	<header class="jumbotron">
+		<h1>All Shopping Lists</h1>
+	</header>
+	 <a class="btn btn-info btn-lg" href="/farms/new">Add a New List</a>
+ 	<ul>
+        <% farms.forEach(function(farm){ %> 
+        	<h2>
+				<li><a href="/farms/<%=farm._id%>"><%= farm.name %></a></li>
+			</h2>
+				<% farm.recipes.forEach(function(recipe){ %>
+					<h4 class="recipeID"><%= recipe._id %></h4>	
+				<% }); %>
+        <% });%>
+	</ul>
+    
+   
+
+
+
+
+
+   
+
+
+
+<%- include ("../partials/footer")%>
+
+
+
+
+
+
+
+

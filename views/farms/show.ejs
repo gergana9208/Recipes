@@ -1,0 +1,215 @@
+<%- include ("../partials/header")%>
+<script type = "text/javascript">	
+//new modal logic		
+	$(function a(){
+			$('#newModalForm').on('click', function(){
+				$('#newModalForm').bind('show', function () {
+					// do sth with the modal
+				});
+					$('#addMyModal').modal('toggle');
+					return false;
+			});
+	});
+//add rows to newModalForm
+	$(document).on('click', '#addRow', function () {
+	 var html = '';
+		html += '<div id="inputFormRow">';
+		html += '<div class="input-group mb-3">';
+		html += '<input type="text" name="item[title][]" class="form-control m-input" placeholder="Ingredient" autocomplete="off">';
+		html += '<span class="input-group-addon">-</span>';
+		html += '<input type="text" name="item[val][]" class="form-control m-input" placeholder="Quantity" autocomplete="off">';
+		html += '</div>';
+		html += '<div class="input-group-append">';
+		html += '<button id="removeRow" type="button" class="btn btn-danger">Remove</button>';
+		html += '</div>';
+		html += '</div>';
+			$('#newRow').append(html);
+	});
+// remove row newModalForm
+	$(document).on('click', '#removeRow', function () {
+		$(this).closest('#inputFormRow').remove();
+	});
+//delete empty rows newModalForm
+	$(document).on('click', '#send', function(){ 
+		$(':input[type="text"]').filter(function(e){
+			if(this.value.length===0){
+			  return true;
+			}  
+		}).remove();
+	});	
+	
+	
+	
+	
+$(document).on('click', '#Sum', function () {
+	
+		$('.ingredients').removeClass('hidden').clone().appendTo( ".result");
+
+	});
+	
+
+
+</script>
+
+
+
+
+<header class="jumbotron">
+		<div class="container">	
+
+    <h1><%= farm.name %></h1>
+   
+    <h2>Added Recipes </h2>
+			<form action="/farms/<%=farm._id%>?_method=DELETE" method="POST">
+        <button class= 'btn btn-danger'>Delete List</button></form>
+
+							</div>
+</header>
+
+    <ul>
+        <% for(let recipe of farm.recipes) {%>
+        <h4>
+			<li><a href="/recipes/<%=recipe._id%>"><%=recipe.name%></a></li>
+		</h4>
+		
+		<ul class='ingredients hidden'>
+					<% for(var k=0; k< recipe.myresult.length; k++){ %>
+						<li>
+							<div>
+								<%= recipe.myresult[k] %>	
+								
+							</div>  
+						</li> 
+					<% } %>
+				</ul>
+	
+		
+								
+		
+		
+		
+		<button  type="button" href="/recipes/<%=recipe._id%>" class=" btn btn-primary"  data-toggle="modal" data-target="#ShowModal"  >Show Recipe	</button>
+        <% } %>
+    </ul>
+
+
+<div class='result'>
+	
+</div>
+
+
+
+
+
+
+
+			<% if(!currentUser){ %>
+	<a class=" btn btn-info btn-lg" href="/login">Login</a>	
+			<% } else { %>
+	<button id="newModalForm" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#addMyModal">Add a New Recipe</button>					
+			<% } %>
+
+   
+    <a class="btn btn-info btn-lg" href="/farms">All Shopping Lists</a>
+    <a id="Sum" onclick ='function count()'  type="button" class="sum btn btn-info btn-lg" >Sum all ingredients</a>
+ 
+
+
+<!--modals -->
+<div class="modal fade" id="addMyModal"  role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">Add Ingredients</h4>
+      </div>
+      <div class="modal-body">
+        <form action="/farms/<%=farm._id%>/recipes" method="POST" role="form" >
+			<div class="form-group">
+						<input class="form-control" type="text" name="name" placeholder="name"> 	
+					</div>
+					<div class="form-group">
+						<input class="form-control" type="text" name="image" placeholder="image url">
+					</div>
+					<div class="form-group">
+						<input class="form-control" type="text" name="description" placeholder="description">
+					</div>
+						<div id="inputFormRow">
+							<div class="input-group mb-3">
+								<input type="text" id="title"  name="item[title][]" class="form-control m-input" placeholder="Ingredient " />
+									<span class="input-group-addon">-</span>
+								<input type="text" name="item[val][]" class="form-control m-input" placeholder="Quantity"/>	 
+							</div>
+							<div class="input-group-append">
+								<button id="removeRow" type="button" class="btn btn-danger">Remove</button>
+							</div>
+						</div>
+						<div id="inputFormRow">
+							<div class="input-group mb-3">
+								<input type="text" id="title"  name="item[title][]" class="form-control m-input" placeholder="Ingredient " autocomplete="off"/>
+									<span class="input-group-addon">-</span>
+								<input type="text" name="item[val][]" class="form-control m-input" placeholder="Quantity" autocomplete="off"/>	 
+							</div>
+							<div class="input-group-append">
+								<button id="removeRow" type="button" class="btn btn-danger">Remove</button>
+							</div>
+						</div>
+						<div id="inputFormRow">
+							<div class="input-group mb-3">
+								<input type="text"  id="title" name="item[title][]" class="form-control m-input" placeholder="Ingredient " autocomplete="off"/>
+									<span class="input-group-addon">-</span>
+								<input type="text" name="item[val][]" class="form-control m-input" placeholder="Quantity" autocomplete="off"/>	 
+							</div>
+							<div class="input-group-append">
+								<button id="removeRow" type="button" class="btn btn-danger">Remove</button>
+							</div>
+						</div>
+						<div id="inputFormRow">
+							<div class="input-group mb-3">
+								<input type="text" id="title"  name="item[title][]" class="form-control m-input" placeholder="Ingredient " autocomplete="off"/>
+									<span class="input-group-addon">-</span>
+								<input type="text" name="item[val][]" class="form-control m-input" placeholder="Quantity" autocomplete="off"/>	 
+							</div>
+							<div class="input-group-append">
+								<button id="removeRow" type="button" class="btn btn-danger">Remove</button>
+							</div>
+						</div>
+						<div id="inputFormRow">
+							<div class="input-group mb-3">
+								<input type="text" id="title" name="item[title][]" class="form-control m-input" placeholder="Ingredient " autocomplete="off"/>
+									<span class="input-group-addon">-</span>
+									<input type="text" name="item[val][]" class="form-control m-input " placeholder="Quantity" autocomplete="off"/>	 
+							</div>
+							<div class="input-group-append">
+								<button id="removeRow" type="button" class="btn btn-danger">Remove</button>
+							</div>
+						</div>
+							<div id="newRow"></div>
+								<button id="addRow" type="button" class="btn btn-info">Add Row</button>
+							<button type="submit" name="send" id="send" value="Send" class="btn btn-lg btn-primary btn-block">Submit!</button>	
+        </form> 
+      </div>
+    </div>
+  </div>
+</div>	
+
+<!--Show modal -->
+<div class="modal fade"  role="dialog"  aria-hidden="true" id="ShowModal" >
+  <div class="modal-dialog">
+    <div class="modal-content">
+		<div class="modal-header">
+        	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          		<span aria-hidden="true">&times;</span>
+        	</button>
+			<div class="modal-body"></div>
+      	</div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<%- include ("../partials/footer")%>

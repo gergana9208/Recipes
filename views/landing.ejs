@@ -1,0 +1,27 @@
+<%- include ("partials/header") %>
+
+	<div class="container">
+		<header class="jumbotron">
+			<h1>
+				Shopping List Made Easy 
+			</h1>
+			<h2>
+				Just Add Your Recipe Ingredeints
+			</h2>
+		</header>
+	
+<!-- original new.ejs page	<a class="btn btn-primary btn-large" href="/recipes/new">Add New Recipe</a>	 -->
+				<% if(!currentUser){ %>
+					<a class=" btn btn-info btn-lg" href="/login">Login</a>	
+				<% } else { %>
+							 <!-- I have hidden this button until I can select and post each recipe to a list 
+<button id="newModalForm" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#addMyModal">Add New Recipe</button>	-->				
+			 		<a class="btn btn-info btn-lg" href="/farms">All Shopping Lists</a>
+				<% } %>
+		
+	</div>
+			
+	
+	
+			
+<%- include ("partials/footer") %>
